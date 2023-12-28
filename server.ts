@@ -88,7 +88,7 @@ export function app(): express.Express {
           description:
             'Private video consultations with Naturopathic Doctors and Holistic Healers from around the world. Social Discussion on how to heal various ailments.',
           image:
-            'https://veterinarian.tube/assets/images/Ht-Profile-pic-default.png',
+            'https://veterinarian.tube/assets/images/landingpage/veterinarian-banner.jpg',
           site: 'https://veterinarian.tube/',
           url: 'https://veterinarian.tube' + params,
           keywords: 'VeterinarianTube',
@@ -153,9 +153,9 @@ export function app(): express.Express {
           const pdhtml = document.createElement('div');
           pdhtml.innerHTML = post?.postdescription || post?.metadescription;
           const talent = {
-            name: post?.title || post?.albumname || 'Healing.Tube Post',
+            name: post?.title || post?.albumname || 'Veterinarian.Tube Post',
             description: pdhtml?.textContent || 'Post content',
-            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://www.healing.tube/assets/images/Ht-Profile-pic-default.png',
+            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://veterinarian.tube/assets/images/landingpage/veterinarian-banner.jpg',
           };
           seo.title = talent.name;
           seo.description = strip_html_tags(talent.description);
@@ -170,7 +170,7 @@ export function app(): express.Express {
 
           console.log('group===>', group);
           const talent = {
-            name: `HealingTube Research ${group?.PageTitle}`,
+            name: `Pet Research Topics ${group?.PageTitle}`,
             description: group?.PageDescription,
             image: group?.CoverPicName || group?.ProfilePicName
           };

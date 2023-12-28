@@ -36,12 +36,12 @@
       <li class="ms-1">
         <a
           class="d-flex gap-4"
-          routerLink="/health-practitioner"
+          routerLink="/veterinarians"
           routerLinkActive="active"
           (click)="closeSidebar()"
         >
           <fa-icon [icon]="['fas', 'house-medical']" class="font-24-px" />
-          <span>Health Practitioner</span>
+          <span>Veterinarians</span>
         </a>
       </li>
       <li class="ms-1">
@@ -52,7 +52,7 @@
           (click)="closeSidebar()"
         >
           <fa-icon [icon]="['fas', 'stethoscope']" class="font-24-px" />
-          <span>Healing Topics</span>
+          <span>Pet Pages</span>
         </a>
       </li>
       <li class="ms-1">
@@ -63,7 +63,7 @@
           (click)="closeSidebar()"
         >
           <fa-icon [icon]="['fas', 'phone']" class="font-24-px" />
-          <span>Request Private Video Call</span>
+          <span>Request Video Call</span>
         </a>
       </li>
 
@@ -221,12 +221,20 @@
         </a>
       </li>
     </ul>
+    <ng-container>
+      <div class="mt-3" *ngIf="sharedService?.advertizementLink?.length">
+        <h6>Advertizement Link</h6>
+        <div *ngFor="let item of sharedService?.advertizementLink">
+          <app-post-meta-data-card [post]="item" />
+        </div>
+      </div>
+    </ng-container>
   </ng-container>
   <ng-container *ngIf="!tokenService.getCredentials()">
     <div class="dashboard-img mb-5">
       <img
         class="w-100 rounded-3"
-        src="/assets/images/landingpage/Healing-Tube-Logo.png"
+        src="/assets/images/landingpage/veterinarian-banner.jpg"
       />
       <!-- <span class="mt-3 text-start font-14-px">
         The Umbrella platform for All freedom based projects worldwide.

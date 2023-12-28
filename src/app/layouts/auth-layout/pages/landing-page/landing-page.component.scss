@@ -16,11 +16,12 @@
   }
 
   .custom-height {
-    background-image: url(/assets/images/landingpage/healing-hm-pg.jpg);
+    background-image: url(/assets/images/landingpage/veterinarian-home.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     object-fit: cover;
-    height: calc(100vh - 48px);
+    // height: calc(100vh - 48px);
+    height: 115vh;
     min-height: 400px;
 
     .banner-text {

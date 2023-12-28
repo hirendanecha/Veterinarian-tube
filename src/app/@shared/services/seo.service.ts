@@ -69,7 +69,7 @@ export class SeoService {
     }
 
     if (!tagValue.image) {
-      tagValue.image = 'https://freedom.buzz/assets/images/banner/Healing-Tube-Logo.png';
+      tagValue.image = 'https://veterinarian.tube/assets/images/landingpage/veterinarian-banner.jpg';
     }
 
     this.meta.updateTag({

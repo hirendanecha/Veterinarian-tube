@@ -6,6 +6,7 @@ import { debounceTime, forkJoin, fromEvent } from 'rxjs';
 import { Community } from 'src/app/@shared/constant/customer';
 import { CommunityService } from 'src/app/@shared/services/community.service';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
+import { SharedService } from 'src/app/@shared/services/shared.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { UploadFilesService } from 'src/app/@shared/services/upload-files.service';
 import { slugify } from 'src/app/@shared/utils/utils';
@@ -17,7 +18,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./add-page-modal.component.scss'],
 })
 export class AddFreedomPageComponent implements OnInit, AfterViewInit {
-  @Input() title: string | undefined = 'Create Health Topics';
+  @Input() title: string | undefined = 'Create Pet Page';
   @Input() cancelButtonLabel: string | undefined = 'Cancel';
   @Input() confirmButtonLabel: string | undefined = 'Create';
   @Input() closeIcon: boolean | undefined;
@@ -51,6 +52,13 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
   allCountryData: any;
   defaultCountry = 'US';
   @ViewChild('zipCode') zipCode: ElementRef;
+  inputLinkValue1 = '';
+  inputLinkValue2 = '';
+  advertizement = {
+    communityId: null,
+    link1: null,
+    link2: null
+  }
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -58,7 +66,8 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
     private communityService: CommunityService,
     private toastService: ToastService,
     private customerService: CustomerService,
-    private uploadService: UploadFilesService
+    private uploadService: UploadFilesService,
+    private sharedService: SharedService
   ) {
     this.userId = window.sessionStorage.user_id;
     this.profileId = localStorage.getItem('profileId');
@@ -187,15 +196,16 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
               this.spinner.hide();
               if (!res.error) {
                 this.submitted = true;
+                this.createAdvertizeMentLink(res.data);
                 this.createCommunityAdmin(res.data);
                 this.activeModal.close('success');
-                this.toastService.success('Health Topic created successfully');
+                this.toastService.success('Pet Page created successfully');
                 // this.router.navigateByUrl('/home');
               }
             },
             error:
               (err) => {
-                this.toastService.danger('Please change topic name. this topic name already in use.');
+                this.toastService.danger('Please change Page name. this Page name already in use.');
                 this.spinner.hide();
               }
           });
@@ -212,17 +222,55 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
               if (!res.error) {
                 this.submitted = true;
                 // this.createCommunityAdmin(res.data);
-                this.toastService.success('Your Health Topic edit successfully!');
+                this.toastService.success('Your Pet Pages edit successfully!');
                 this.activeModal.close('success');
               }
             },
             error:
               (err) => {
-                this.toastService.danger('Please change topic name. this topic name already in use.');
+                this.toastService.danger('Please change Page name. this Page name already in use.');
                 this.spinner.hide();
               }
           });
+          if (this.data.link1 || this.data.link2) {
+            this.editAdvertizeMentLink(this.data.Id);
+          } else {
+            this.createAdvertizeMentLink(this.data.Id);
+          }
+          this.sharedService.advertizementLink = [];
       }
+    }
+  }
+
+  createAdvertizeMentLink(id) {
+    if (id && (this.advertizement.link1 || this.advertizement.link2)) {
+      this.advertizement.communityId = id
+      this.communityService.createAdvertizeMentLink(this.advertizement).subscribe({
+        next: (res => {
+          console.log(res);
+        }),
+        error: (err => {
+          console.log(err)
+        })
+      })
+    }
+  }
+
+  editAdvertizeMentLink(id) {
+    if (id && (this.advertizement.link1 || this.advertizement.link2)) {
+      const data = {
+        communityId: id,
+        link1: this.advertizement.link1 || null,
+        link2: this.advertizement.link2 || null
+      }
+      this.communityService.editAdvertizeMentLink(data).subscribe({
+        next: (res => {
+          console.log(res);
+        }),
+        error: (err => {
+          console.log(err)
+        })
+      })
     }
   }
 
@@ -345,5 +393,14 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
           console.log(err);
         }
       );
+  }
+
+  onTagUserInputChangeEvent(data: any): void {
+    this.advertizement.link1 = data?.meta?.url
+    console.log(data)
+  }
+  onTagUserInputChangeEvent1(data): void {
+    this.advertizement.link2 = data?.meta?.url
+    console.log(data)
   }
 }
