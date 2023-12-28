@@ -93,12 +93,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         if (name) {
           this.communitySlug = name;
           this.getCommunityDetailsBySlug();
+        } else {
+          this.sharedService.advertizementLink = [];
         }
 
         this.isNavigationEnd = true;
       });
       const data = {
-        title: 'HealingTube',
+        title: 'VeterinarianTube',
         url: `${window.location.href}`,
       };
       this.seoService.updateSeoMetaData(data);
@@ -205,6 +207,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           this.spinner.hide();
           if (res?.Id) {
             const details = res;
+            if (res.pageType === 'page') {
+              this.sharedService.getAdvertizeMentLink(res?.Id);
+            } else {
+              this.sharedService.advertizementLink = null;
+            }
             const data = {
               title: details?.CommunityName,
               url: `${environment.webUrl}${details?.pageType}/${details?.slug}`,
@@ -410,6 +417,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         keyboard: false,
         size: 'lg',
       });
+      data.link1 = this.sharedService?.advertizementLink[0]?.url;
+      data.link2 = this.sharedService?.advertizementLink[1]?.url;
     }
     modalRef.componentInstance.title = `Edit ${data.pageType} Details`;
     modalRef.componentInstance.cancelButtonLabel = 'Cancel';
@@ -419,7 +428,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     modalRef.result.then((res) => {
       if (res === 'success') {
         if (data.pageType === 'community') {
-          this.router.navigate(['health-practitioner']);
+          this.router.navigate(['veterinarians']);
         } else {
           this.router.navigate(['pages']);
         }
@@ -504,7 +513,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
                 // this.getCommunityDetailsBySlug();
                 this.router.navigate([
                   `${this.communityDetails.pageType === 'community'
-                    ? 'health-practitioner'
+                    ? 'veterinarians'
                     : 'pages'
                   }`,
                 ]);
@@ -563,7 +572,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     modalRef.componentInstance.title = `Warning message`;
     modalRef.componentInstance.confirmButtonLabel = 'Ok';
     modalRef.componentInstance.cancelButtonLabel = 'Cancel';
-    modalRef.componentInstance.message = `Videos on HealingTube home are limited to 2 Minutes!
+    modalRef.componentInstance.message = `Videos on VeterinarianTube home are limited to 2 Minutes!
     Videos must be a mp4 format`;
     modalRef.result.then((res) => {
       if (res === 'success') {
@@ -589,7 +598,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         const bytes = copyImage.length;
         const megabytes = bytes / (1024 * 1024);
         if (megabytes > 1) {
-          this.postData['postdescription'] = content.replace(copyImage, '');
+          let copyImageTag = '<img\\s*src\\s*=\\s*""\\s*alt\\s*="">'
+          this.postData['postdescription'] = `<div>${content.replace(copyImage, '').replace(/\<br\>/ig, '').replace(new RegExp(copyImageTag, 'g'), '')}</div>`;
+          // this.postData['postdescription'] = content.replace(copyImage, '');
           const base64Image = copyImage
             .trim()
             .replace(/^data:image\/\w+;base64,/, '');
