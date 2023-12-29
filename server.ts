@@ -94,7 +94,7 @@ export function app(): express.Express {
           keywords: 'VeterinarianTube',
         };
         if (
-          params.indexOf('communities/') > -1 ||
+          params.indexOf('veterinarians/') > -1 ||
           params.indexOf('pages/') > -1
         ) {
           let id = params.split('/');
