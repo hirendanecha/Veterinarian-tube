@@ -80,6 +80,8 @@ export class PostCardComponent implements OnInit {
   commentDescriptionimageUrl: string;
   replayCommentDescriptionimageUrl: string;
   shareButton = false;
+  isViewProfile = false;
+
 
   constructor(
     private seeFirstUserService: SeeFirstUserService,
@@ -97,7 +99,9 @@ export class PostCardComponent implements OnInit {
     private seoService: SeoService,
     public breakpointService: BreakpointService,
     public activeModal: NgbActiveModal
-  ) {
+    
+    ) {
+    this.router
     this.profileId = localStorage.getItem('profileId');
     afterNextRender(() => {
 
@@ -134,6 +138,8 @@ export class PostCardComponent implements OnInit {
     if (path === 'view-profile/:id' || path === 'post/:id') {
       this.shareButton = true;
     }
+    this.isViewProfile = path.includes('view-profile') || false;
+
   }
   getPostUrl(post: any) {
     // if (post.streamname) {
@@ -242,7 +248,7 @@ export class PostCardComponent implements OnInit {
   }
 
   editComment(comment): void {
-    if (comment.parentCommentId) {
+     if (comment)  {
       const modalRef = this.modalService.open(ReplyCommentModalComponent, {
         centered: true,
       });
