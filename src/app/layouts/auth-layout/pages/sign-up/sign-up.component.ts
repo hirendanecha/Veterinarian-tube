@@ -60,6 +60,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   });
   theme = '';
   captchaToken = '';
+  passwordHidden: boolean = true;
   @ViewChild('captcha', { static: false }) captchaElement: ElementRef;
 
   constructor(
@@ -115,6 +116,10 @@ export class SignUpComponent implements OnInit, AfterViewInit {
         }
       },
     });
+  }
+  togglePasswordVisibility(passwordInput: HTMLInputElement) {
+    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    this.passwordHidden = !this.passwordHidden;
   }
 
   upload(file: any = {}) {
