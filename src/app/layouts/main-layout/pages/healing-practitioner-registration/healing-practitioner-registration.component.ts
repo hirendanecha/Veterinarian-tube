@@ -6,6 +6,7 @@ import { CustomerService } from 'src/app/@shared/services/customer.service';
 import { SeoService } from 'src/app/@shared/services/seo.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-healing-practitioner-registration',
@@ -84,8 +85,9 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
     this.profileId = Number(localStorage.getItem('profileId'));
     const data = {
       title: 'VeterinarianTube Registration',
-      url: `${window.window.location.href}`,
+      url: `${environment.webUrl}veterinarian-registration`,
       description: '',
+      image: `${environment.webUrl}assets/images/landingpage/veterinarian-banner.jpg`,
     };
     this.seoService.updateSeoMetaData(data);
   }

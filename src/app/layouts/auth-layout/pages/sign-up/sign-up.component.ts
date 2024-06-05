@@ -78,7 +78,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       description: 'Registration page',
       image: `${environment.webUrl}assets/images/landingpage/veterinarian-banner.jpg`,
     };
-    // this.seoService.updateSeoMetaData(data);
+    this.seoService.updateSeoMetaData(data);
     this.theme = localStorage.getItem('theme');
   }
 
