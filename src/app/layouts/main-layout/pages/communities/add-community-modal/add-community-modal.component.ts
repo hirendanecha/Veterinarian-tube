@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, forkJoin, fromEvent } from 'rxjs';
 import { slugify } from 'src/app/@shared/utils/utils';
@@ -57,6 +57,12 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
   selectedValues: number[] = [];
   selectedAreaValues: number[] = [];
 
+  practitionerId: number;
+  pricingPage: boolean;
+  totalAmt: number;
+  selectedCards: any[] = [];
+  appointmentCards: any = [];
+
   communityForm = new FormGroup({
     profileId: new FormControl(),
     CommunityName: new FormControl(''),
@@ -81,7 +87,8 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
     private toastService: ToastService,
     private customerService: CustomerService,
     private uploadService: UploadFilesService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
     this.userId = window.sessionStorage.user_id;
     this.profileId = localStorage.getItem('profileId');
@@ -368,8 +375,61 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  clearForm(){
-    this.router.navigate(['/veterinarians'])
+  clearForm() {
+    if (this.data.Id) {
+      this.activeModal.close();
+    } else {
+      this.router.navigate(['/veterinarians']);
+    }
+  }
+
+  isSelected(id: number): boolean {
+    return this.selectedCards.includes(id);
+  }
+
+  selectCard(cardId: string, amt: number): void {
+    this.totalAmt = amt;
+    const index = this.selectedCards.indexOf(cardId);
+    if (index === -1) {
+      this.selectedCards = [cardId];
+    } else {
+      this.selectedCards = [];
+      this.totalAmt = null;
+    }
+  }
+
+  feturedSelectCard(cardId: string, amt: number): void {
+    const index = this.selectedCards.indexOf(cardId);
+    if (this.totalAmt !== undefined && this.totalAmt !== null) {
+      if (index === -1) {
+        this.selectedCards.push(cardId);
+        this.totalAmt = isNaN(this.totalAmt) ? amt : this.totalAmt + amt;
+      } else {
+        this.selectedCards = this.selectedCards.filter((id) => id !== cardId);
+        this.totalAmt = this.totalAmt - amt;
+      }
+    } else {
+      this.toastService.danger(
+        'Please select your preference for Minutes of Video Time.'
+      );
+    }
+  }
+
+  backToApplication() {
+    this.pricingPage = false;
+  }
+
+  nextToApplication() {
+    const selectedSlot = {
+      selectedCard: this.selectedCards,
+      totalAmt: this.totalAmt,
+      practitionerId: this.practitionerId,
+      profileId: this.profileId,
+    };
+
+    if (selectedSlot && !this.pricingPage) {
+      this.pricingPage = true;
+    }
   }
 
   convertToUppercase(event: any) {
