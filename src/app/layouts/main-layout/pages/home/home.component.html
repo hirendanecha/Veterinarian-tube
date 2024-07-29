@@ -191,12 +191,29 @@
         [icon]="['fas', 'circle']"
         class="eye-icon font-14-px"
       ></fa-icon>
-      <span class="ms-1 w-152-px">Areas of Practice:</span>
+      <span class="ms-1 w-152-px">Emphasis of Practice:</span>
     </div>
     <div class="d-flex flex-row flex-wrap gap-2">
       <div
         class="smtxt category-card"
         *ngFor="let item of communityDetails?.emphasis"
+      >
+        {{ item.name }}
+      </div>
+    </div>
+  </div>
+  <div class="d-sm-flex mt-4 align-items-center gap-2">
+    <div class="d-flex flex-row align-self-baseline label">
+      <fa-icon
+        [icon]="['fas', 'circle']"
+        class="eye-icon font-14-px"
+      ></fa-icon>
+      <span class="ms-1 w-152-px">Areas of Practice:</span>
+    </div>
+    <div class="d-flex flex-row flex-wrap gap-2">
+      <div
+        class="smtxt category-card"
+        *ngFor="let item of communityDetails.areas"
       >
         {{ item.name }}
       </div>

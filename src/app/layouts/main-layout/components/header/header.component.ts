@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   NgbDropdown,
   NgbModal,
@@ -22,7 +22,7 @@ import { SocketService } from 'src/app/@shared/services/socket.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
   @ViewChild('userSearchDropdownRef', { static: false, read: NgbDropdown })
   userSearchNgbDropdown: NgbDropdown;
   isOpenUserMenu = false;
@@ -70,6 +70,9 @@ export class HeaderComponent {
       this.sharedService.isNotify = false;
     }
     this.channelId = +localStorage.getItem('channelId');
+  }
+  ngOnInit(): void {
+    console.log("hello",this.sharedService?.userData?.ProfilePicName);
   }
 
   openProfileMenuModal(): void {

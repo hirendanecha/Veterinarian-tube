@@ -77,7 +77,7 @@ export class RightSidebarComponent implements OnInit {
 
   goToCommunityDetails(community: any): void {
     this.closeSidebar();
-    this.router.navigate(['veterinarians']);
+    this.router.navigate([`veterinarians/details/${community?.slug}`]);
   }
 
   closeSidebar(): void {

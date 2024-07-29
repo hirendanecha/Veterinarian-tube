@@ -62,6 +62,8 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
   totalAmt: number;
   selectedCards: any[] = [];
   appointmentCards: any = [];
+  removeValues: number[] = [];
+  removeAreaValues: number[] = [];
 
   communityForm = new FormGroup({
     profileId: new FormControl(),
@@ -118,7 +120,8 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
       this.communityForm.get('State').enable();
       this.communityForm.get('City').enable();
       this.communityForm.get('County').enable();
-      console.log(this.data);
+      this.selectedValues = this.data.emphasis.map((emphasis) => emphasis.eId);
+      this.selectedAreaValues = this.data.areas.map((area) => area.aId);
     }
   }
 
@@ -358,20 +361,28 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
     const isChecked = event.target.checked;
     if (isChecked) {
       this.selectedValues.push(emphasis.eId);
+      this.removeValues.splice(emphasis.eId);
     } else {
       this.selectedValues = this.selectedValues.filter(
         (id) => id !== emphasis.eId
       );
+      if (!this.removeValues.includes(emphasis.eId)) {
+        this.removeValues.push(emphasis.eId);
+      }
     }
   }
   onAreaboxChange(event: any, area: any): void {
     const isChecked = event.target.checked;
     if (isChecked) {
       this.selectedAreaValues.push(area.aId);
+      this.removeAreaValues.splice(area.aId);
     } else {
       this.selectedAreaValues = this.selectedAreaValues.filter(
         (id) => id !== area.aId
       );
+      if (!this.removeAreaValues.includes(area.aId)) {
+        this.removeAreaValues.push(area.aId);
+      }
     }
   }
 
