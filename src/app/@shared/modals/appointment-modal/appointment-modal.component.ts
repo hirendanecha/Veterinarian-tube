@@ -131,7 +131,7 @@ export class AppointmentModalComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.getProfile(this.data.practitionerProfileId);
+    this.getProfile(this.data.veterinarianProfileId);
   }
 
   async generateTimeSlots(startTime, endTime, duration) {
@@ -218,8 +218,8 @@ export class AppointmentModalComponent implements AfterViewInit {
       appointment: {
         appointmentDateTime: appointmentDateTime,
         profileId: this.data.profileId,
-        veterinarianProfileId: this.data.practitionerProfileId,
-        veterinarianName: this.data.practitionerName,
+        veterinarianProfileId: this.data.veterinarianProfileId,
+        veterinarianName: this.data.veterinarianName,
       },
       topics: topics,
       slug: this.data.slug,

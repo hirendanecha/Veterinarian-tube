@@ -213,29 +213,44 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
       }
     }
     if (this.communityForm.valid && this.data.Id) {
-      this.communityService
-        .editCommunity(this.communityForm.value, this.data.Id)
-        .subscribe({
-          next: (res: any) => {
-            this.spinner.hide();
-            if (!res.error) {
-              this.submitted = true;
-              // this.createCommunityAdmin(res.data);
-              this.toastService.success(
-                'Your change edit successfully!'
-              );
-              this.activeModal.close('success');
-            }
-          },
-          error: (err) => {
-            this.toastService.danger(
-              'Please change Veterinarian name. this Veterinarian name already in use.'
-            );
-            this.spinner.hide();
-          },
-        });
+      this.editCommunityInterests();
     }
   }
+  editCommunityInterests() {
+    const existingEmphasis = this.data.emphasis.map((emphasis) => emphasis.eId);
+    const existingAreas = this.data.areas.map((area) => area.aId);
+    const filteredEmphasis = this.selectedValues.filter((ele) =>
+      !existingEmphasis.includes(ele) ? ele : null
+    );
+    const filteredAreas = this.selectedAreaValues.filter((ele) =>
+      !existingAreas.includes(ele) ? ele : null
+    );
+
+    const formData = this.communityForm.value;
+    formData['emphasis'] = filteredEmphasis;
+    formData['areas'] = filteredAreas;
+    formData['removeEmphasisList'] = this.removeValues;
+    formData['removeAreasList'] = this.removeAreaValues;
+    this.communityService.editCommunity(formData, this.data.Id).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (!res.error) {
+          this.submitted = true;
+          this.toastService.success(
+            'Your change edit successfully!'
+          );
+          this.activeModal.close('success');
+        }
+      },
+      error: (err) => {
+        this.toastService.danger(
+          'Please change Veterinarian name. this Veterinarian name already in use.'
+        );
+        this.spinner.hide();
+      },
+    });
+  }
+
 
   createCommunityAdmin(id): void {
     const data = {

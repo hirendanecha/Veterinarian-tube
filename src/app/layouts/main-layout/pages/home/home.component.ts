@@ -426,11 +426,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.socketService?.createOrEditPost(this.postData);
       this.buttonClicked = false;
       this.resetPost();
-      // , (data) => {
-      //   this.spinner.hide();
-      //   console.log(data)
-      //   return data;
-      // });
     }
   }
 
@@ -740,8 +735,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     
     const data = {
       profileId: +this.profileId,
-      practitionerProfileId: this.communityDetails?.profileId,
-      practitionerName: this.communityDetails.CommunityName,
+      veterinarianProfileId: this.communityDetails?.profileId,
+      veterinarianName: this.communityDetails.CommunityName,
       slug: this.communityDetails.slug,
       topics: this.communityDetails.emphasis,
     };
@@ -797,11 +792,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       if (res === 'success') {
         const data = {
           appointmentId: obj.id,
-          practitionerProfileId: obj.practitionerProfileId,
+          veterinarianProfileId: obj.veterinarianProfileId,
           profileId: obj.profileId,
-          practitionerName: obj.practitionerName,
+          veterinarianName: obj.veterinarianName,
         };
         this.getCancelAppoinments(data);
+        this.toastService.success("Remove Appointment Succesfully");
       }
     });
   }
