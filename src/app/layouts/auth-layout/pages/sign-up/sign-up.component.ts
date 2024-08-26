@@ -52,17 +52,19 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     Email: new FormControl('', [Validators.required]),
     Password: new FormControl('', [Validators.required]),
     confirm_password: new FormControl('', [Validators.required]),
-    MobileNo: new FormControl('', [Validators.required]),
+    MobileNo: new FormControl(''),
     Country: new FormControl('US', [Validators.required]),
     Zip: new FormControl('', Validators.required),
     State: new FormControl('', Validators.required),
-    City: new FormControl('', Validators.required),
-    County: new FormControl('', Validators.required),
+    City: new FormControl(''),
+    County: new FormControl(''),
     TermAndPolicy: new FormControl(false, Validators.required),
   });
   theme = '';
   captchaToken = '';
   passwordHidden: boolean = true;
+  confirmpasswordHidden: boolean = true;
+
   @ViewChild('captcha', { static: false }) captchaElement: ElementRef;
 
   constructor(
@@ -122,6 +124,11 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   togglePasswordVisibility(passwordInput: HTMLInputElement) {
     passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
     this.passwordHidden = !this.passwordHidden;
+  }
+
+  toggleConfirmPasswordVisibility(confirmpasswordInput: HTMLInputElement) {
+    confirmpasswordInput.type = confirmpasswordInput.type === 'password' ? 'text' : 'password';
+    this.confirmpasswordHidden = !this.confirmpasswordHidden;
   }
 
   upload(file: any = {}) {
@@ -233,14 +240,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       if (!this.validatepassword()) {
         return;
       }
-
-      const id = this.route.snapshot.paramMap.get('id');
-      if (this.userId) {
-        // this.updateCustomer();
-      } else {
-        // this.submitted = true;
-        this.save();
-      }
+      this.save();
     } else {
       this.msg = 'Please enter mandatory fields(*) data.';
       this.scrollTop();
